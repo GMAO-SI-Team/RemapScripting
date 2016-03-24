@@ -32,9 +32,8 @@ cp -v $CURRAEROCOMDIR/scripts/doremap $AEROCOMDIR/$LEVDIR/
 mkdir -v -p $AEROCOMDIR/$LEVDIR/aero_clm
 cp -v $CURRAEROCOMDIR/scripts/aero_clm/doremap $AEROCOMDIR/$LEVDIR/aero_clm
 
-cd $OUTDIR/fvInput
-ln -sv AeroCom PIESA
-cd $CURRDIR
+echo "Running $CMIPDIR/$LEVDIR/ -levs ${NUMLEVELS} -outdir $CMIPDIR/$LEVDIR/"
+$CMIPDIR/$LEVDIR/doremap -levs ${NUMLEVELS} -outdir $CMIPDIR/$LEVDIR/  > $CMIPDIR/$LEVDIR/doremap.log
 
 # CMIPDIR
 # -------
@@ -44,6 +43,9 @@ CMIPDIR=$OUTDIR/fvInput/CMIP/
 
 mkdir -v -p $CMIPDIR/$LEVDIR
 cp -v $CURRCMIPDIR/scripts/doremap $CMIPDIR/$LEVDIR/
+
+echo "Running $CMIPDIR/$LEVDIR/ -levs ${NUMLEVELS} -outdir $CMIPDIR/$LEVDIR/"
+$CMIPDIR/$LEVDIR/doremap -levs ${NUMLEVELS} -outdir $CMIPDIR/$LEVDIR/  > $CMIPDIR/$LEVDIR/doremap.log
 
 # MERRA2DIR
 # ---------
@@ -74,3 +76,11 @@ mkdir -v -p $CHEMDIR/$LEVDIR/aero_clm
 cp -v $CURRCHEMDIR/scripts/aero_clm/README $CHEMDIR/$LEVDIR/aero_clm/
 cp -v $CURRCHEMDIR/scripts/aero_clm/remap $CHEMDIR/$LEVDIR/aero_clm/
 cp -v $CURRCHEMDIR/scripts/aero_clm/remap_gfed $CHEMDIR/$LEVDIR/aero_clm/
+
+# PIESA
+# -----
+
+cd $OUTDIR/fvInput
+ln -sv AeroCom PIESA
+cd $CURRDIR
+
