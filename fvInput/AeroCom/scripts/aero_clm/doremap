@@ -1,0 +1,106 @@
+#!/bin/tcsh -f
+
+# MAT: Note, to reproduce these files you'll need ver 1.25 of GFIO_remap.f90
+
+# ------------------------------
+# Process command line arguments
+# ------------------------------
+
+if ($#argv != 4) then
+   goto usage
+endif
+
+while ($#argv)
+
+   if ( ( "$1" != "-levs" ) && ( "$1" != "-outdir") ) then
+      goto usage
+   endif
+
+   if ("$1" == "-levs") then
+      shift; if (! $#argv) goto usage
+      set numlevs = $1
+   endif
+
+   if ("$1" == "-outdir") then
+      shift; if (! $#argv) goto usage
+      set outdir = "$1"
+   endif
+
+   shift
+end
+
+echo "Remapping to $numlevs levels"
+echo "Output will be saved to $outdir"
+
+# ----------------
+# Test for ESMADIR
+# ----------------
+
+if ( $?ESMADIR ) then
+   if ( $ESMADIR == '' ) then
+      echo "Error: ESMADIR is set to blank. Please set it correctly"
+      exit 1
+   else 
+      echo "ESMADIR: $ESMADIR"
+   endif
+else
+   echo "Error: ESMADIR must be set"
+   exit 1
+endif
+
+set BINDIR = $ESMADIR/Linux/bin
+
+# ---------------------------------
+# Test for required files in BINDIR
+# ---------------------------------
+
+if ( -e $BINDIR/g5_modules ) then
+   source $BINDIR/g5_modules
+else
+   echo "Error: g5_modules not found in $BINDIR"
+   exit 1
+endif
+
+if ( ! -x $BINDIR/GFIO_remap.x ) then
+   echo "Error: GFIO_remap.x not found in $BINDIR"
+   exit 1
+endif
+
+set indir = "/discover/nobackup/rgovinda/AER_V_CLIM/CLIMATOLOGY"
+#set indir = "/discover/nobackup/projects/gmao/share/gmao_ops/fvInput/AeroCom/L72/aero_clm"
+
+mkdir -p $outdir
+
+set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.2003-2014.2008"
+
+# -------------
+# Run the remap
+# -------------
+
+foreach IFILE ( `find $indir -type f -iname "dR_MERRA-AA-r2.aer_Nv.2003-2014*"` )
+   
+   set FILE = `basename $IFILE`
+   
+   echo $FILE
+   
+   $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${FILE}.LON_0_360 \
+                                                ${indir}/$FILE 
+                                                
+   $BINDIR/GFIO_remap.x -nlev ${numlevs} \
+                        -like_sph 15,du001,du002,du003,du004,du005,ss001,ss002,ss003,ss004,ss005,so4,bcphobic,bcphilic,ocphobic,ocphilic \
+                        -pref 100000 -psfile $PS_FILE -clim  \
+                        -o ${FILE}.z${numlevs}.LON_0_360 \
+                           ${FILE}.LON_0_360
+
+   $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${outdir}/$FILE  \
+                                                $FILE.z${numlevs}.LON_0_360
+
+   /bin/rm $FILE.z${numlevs}.LON_0_360 ${FILE}.LON_0_360
+end
+
+usage:
+cat <<EOF
+
+usage: $0:t -levs numlevels -outdir OUTDIR
+
+EOF

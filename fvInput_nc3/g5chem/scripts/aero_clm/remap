@@ -1,0 +1,108 @@
+#!/bin/tcsh -f
+
+# ------------------------------
+# Process command line arguments
+# ------------------------------
+
+if ($#argv != 4) then
+   goto usage
+endif
+
+while ($#argv)
+
+   if ( ( "$1" != "-levs" ) && ( "$1" != "-outdir") ) then
+      goto usage
+   endif
+
+   if ("$1" == "-levs") then
+      shift; if (! $#argv) goto usage
+      set numlevs = $1
+   endif
+
+   if ("$1" == "-outdir") then
+      shift; if (! $#argv) goto usage
+      set outdir = "$1"
+   endif
+
+   shift
+end
+
+echo "Remapping to $numlevs levels"
+echo "Output will be saved to $outdir"
+
+# ----------------
+# Test for ESMADIR
+# ----------------
+
+if ( $?ESMADIR ) then
+   if ( $ESMADIR == '' ) then
+      echo "Error: ESMADIR is set to blank. Please set it correctly"
+      exit 1
+   else 
+      echo "ESMADIR: $ESMADIR"
+   endif
+else
+   echo "Error: ESMADIR must be set"
+   exit 1
+endif
+
+set BINDIR = $ESMADIR/Linux/bin
+set POSTDIR = $ESMADIR/src/GMAO_Shared/GEOS_Util/post
+
+# ---------------------------------
+# Test for required files in BINDIR
+# ---------------------------------
+
+if ( -e $BINDIR/g5_modules ) then
+   source $BINDIR/g5_modules
+else
+   echo "Error: g5_modules not found in $BINDIR"
+   exit 1
+endif
+
+if ( ! -x $POSTDIR/convert_aerosols.x ) then
+   echo "Error: convert_aerosols.x not found in $POSTDIR"
+   exit 1
+endif
+
+set SHAREL72DIR = /discover/nobackup/projects/gmao/share/dao_ops/fvInput_nc3/g5chem/L72/aero_clm
+set SHAREL137DIR = /discover/nobackup/projects/gmao/share/dao_ops/fvInput_nc3/g5chem/L137/aero_clm
+
+# MAT: Note that convert_aerosols.x should be compiled at r8 for this task. Some
+#      of the aerosols climatology values are very small and instabilities can be
+#      seen at r4
+#      You'll need to compile *all* of post as r8 for this to work. I tried to make
+#      some GNU make fanciness do it, did not take.
+
+
+cd $SHAREL72DIR
+
+set files = `ls -1 *r*.*aer*`
+#set files = `ls -1 *r2*.*aer*200801*`
+cd $outdir
+
+foreach file ($files)
+
+   ln -s $SHAREL72DIR/$file fdummy
+   $POSTDIR/convert_aerosols.x -psfile $SHAREL137DIR/d5_merra.PS.clim.ALL.DC0576xPC0361.nc4 -f fdummy -lm ${numlevs}
+   /bin/rm fdummy
+   /bin/mv fdummy* $file
+
+   if(-e filename1 ) /bin/rm filename1
+   if(-e filename2 ) /bin/rm filename2
+   echo $file                                  > filename1
+   echo $file |  sed -e "s/z72/z${numlevs}/g"  > filename2
+
+   /bin/mv `cat filename1 filename2`
+
+end
+
+if(-e filename1 ) /bin/rm filename1
+if(-e filename2 ) /bin/rm filename2
+
+usage:
+cat <<EOF
+
+usage: $0:t -levs numlevels -outdir OUTDIR
+
+EOF

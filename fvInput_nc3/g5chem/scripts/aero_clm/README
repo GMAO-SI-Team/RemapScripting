@@ -1,0 +1,18 @@
+NOTE: To run these scripts, the post directory in your ESMADIR *MUST* be compiled as
+      r8. To do this, first modify the GNUmakefile to:
+
+         1. Set the THIS_GFIO and THIS_CFIO targets to point to r8:
+
+                THIS_GFIO  = GMAO_gfio_r8
+                THIS_CFIO  = MAPL_cfio_r8
+
+         2. Comment out the line that says FREAL = $(FREAL4)
+
+                #FREAL = $(FREAL4)
+
+         3. Run this:
+
+               $ make convert_aerosols.x
+
+      This will build a convert_aerosols.x utility that works
+
