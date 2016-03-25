@@ -70,6 +70,8 @@ set indir = "/discover/nobackup/projects/gmao/share/dasilva/fvInput/fvInput_nc3/
 
 mkdir -p $outdir
 
+cd $outdir
+
 set TYPE_TABLE = ( cmip5.aircraft_fuel gmi_oh_ch4_h2o2_no3 )
 
 foreach TYPE ( `echo $TYPE_TABLE` ) 

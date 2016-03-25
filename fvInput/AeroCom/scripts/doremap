@@ -72,6 +72,8 @@ set indir = "/discover/nobackup/projects/gmao/share/dasilva/fvInput/fvInput_nc3/
 
 mkdir -p $outdir
 
+cd $outdir
+
 foreach TYPE ( `echo $TYPE_TABLE` ) 
 
    echo "Running $TYPE..."

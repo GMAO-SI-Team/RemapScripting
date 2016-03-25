@@ -79,6 +79,9 @@ cd $SHAREL72DIR
 
 set files = `ls -1 *r*.*aer*`
 #set files = `ls -1 *r2*.*aer*200801*`
+
+mkdir -p $outdir
+
 cd $outdir
 
 foreach file ($files)

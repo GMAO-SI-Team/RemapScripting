@@ -70,6 +70,8 @@ set indir = "/discover/nobackup/projects/gmao/share/dasilva/fvInput/fvInput_nc3/
 
 mkdir -p $outdir
 
+cd $outdir
+
 set TYPE_TABLE = ( gmi_ctm_hindcast.oxidants )
 
 foreach TYPE ( `echo $TYPE_TABLE` ) 

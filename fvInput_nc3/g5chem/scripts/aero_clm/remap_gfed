@@ -78,6 +78,9 @@ set SHAREL137DIR = /discover/nobackup/projects/gmao/share/dao_ops/fvInput_nc3/g5
 cd $SHAREL72DIR
 
 set files = `ls -1 gfed*.nc`
+
+mkdir -p $outdir
+
 cd $outdir
 
 foreach file ($files)

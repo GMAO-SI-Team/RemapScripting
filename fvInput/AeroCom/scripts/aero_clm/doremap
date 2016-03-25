@@ -71,6 +71,8 @@ set indir = "/discover/nobackup/rgovinda/AER_V_CLIM/CLIMATOLOGY"
 
 mkdir -p $outdir
 
+cd $outdir
+
 set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.2003-2014.2008"
 
 # -------------
