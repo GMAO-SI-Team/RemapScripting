@@ -138,6 +138,12 @@ foreach TYPE ( `echo $TYPE_TABLE` )
          /bin/rm ${FILE}
          /bin/rm AeroCom.aircraft_fuel.eta.${TAGO}.${TAG}.nc.LON_0_360
 
+         # Now make the aircraft links
+
+         set FIRSTYEAR = `echo $TAG | cut -c1-4`
+         set FULLYEAR = `echo "$FIRSTYEAR + 1" | bc`
+
+         /bin/ln -s AeroCom.aircraft_fuel.eta.${TAGO}.${TAG}.nc AeroCom.aircraft_fuel.eta.${TAGO}.${FULLYEAR}.nc
 
       else if ( $TYPE == "A2_ACCMIP" ) then
          
