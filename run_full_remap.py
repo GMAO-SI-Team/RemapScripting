@@ -18,7 +18,7 @@ def rename_dirs(directory, in_pattern, out_pattern):
             if dir == in_pattern:
                 os.rename(os.path.join(root, in_pattern), os.path.join(root, out_pattern))
 
-def find_script(directory, in_pattern):
+def find_script(directory, scriptname):
     """
     This function takes a directory and finds executable 
     files that are in that directory and returns a list
@@ -29,7 +29,7 @@ def find_script(directory, in_pattern):
 
     for root, dirs, files in os.walk(directory, topdown=False):
         for file in files:
-            if in_pattern in file:
+            if file == scriptname:
                 if os.access(os.path.join(root, file), os.X_OK):
                     scripts.append(os.path.join(root,file))
 
@@ -100,7 +100,8 @@ def main():
     levdir = 'L'+str(numlevs)
 
     if overwrite:
-        shutil.rmtree(outdir)
+        if os.path.isdir(outdir):
+            shutil.rmtree(outdir)
 
     # Copy the current directory tree to outdir,
     # ignoring any bash, py, or git files
