@@ -124,8 +124,11 @@ def parse_args():
 
     p = argparse.ArgumentParser(description="Utility to create new files for new number of levels")
 
-    p.add_argument('-l','--levs', type=int, help="Number of levels", required=True)
-    p.add_argument('-o','--output', type=str, help="Output directory", required=True)
+    group1 = p.add_argument_group('required arguments')
+
+    group1.add_argument('-l','--levs', type=int, help="Number of levels", required=True)
+    group1.add_argument('-o','--output', type=str, help="Output directory", required=True)
+
     p.add_argument(     '--overwrite', help="Remove output directory", action='store_true')
     p.add_argument(     '--dryrun', help="Create the tree, but don't execute the scripts", action='store_true')
 
