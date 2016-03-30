@@ -79,7 +79,7 @@ foreach TYPE ( `echo $TYPE_TABLE` )
    echo "Running $TYPE..."
 
    if ( $TYPE == "gmi_ctm_hindcast.oxidants"  ) then
-      set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.x144_y091.2003-2014.2008"
+      set PS_FILE = "/discover/nobackup/rgovinda/d5124_m2_jan00/MERRA2/CLIM/instM_3d_aer_Nv/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
       set TAGO = "x144_y91_z${numlevs}_t14"
    endif
 

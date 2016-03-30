@@ -79,10 +79,10 @@ foreach TYPE ( `echo $TYPE_TABLE` )
    echo "Running $TYPE..."
    
    if ( $TYPE == "cmip5.aircraft_fuel" ) then
-      set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.x288_y181.2003-2014.2008"
+      set PS_FILE = "/discover/nobackup/rgovinda/d5124_m2_jan00/MERRA2/CLIM/instM_3d_aer_Nv/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008"
       set TAGO = "x288_y181_z${numlevs}_t14"
    else if ( $TYPE == "gmi_oh_ch4_h2o2_no3"  ) then
-      set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.x144_y091.2003-2014.2008"
+      set PS_FILE = "/discover/nobackup/rgovinda/d5124_m2_jan00/MERRA2/CLIM/instM_3d_aer_Nv/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
       set TAGO = "x144_y91_z${numlevs}_t12"
    endif
 
