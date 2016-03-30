@@ -73,7 +73,8 @@ mkdir -p $outdir
 
 cd $outdir
 
-set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.2003-2014.2008"
+#set PS_FILE = "/discover/nobackup/rgovinda/AER_V_CLIM/DELP/dR_MERRA-AA-r2.ps_delp.2003-2014.2008"
+set PS_FILE = "/discover/nobackup/rgovinda/d5124_m2_jan00/MERRA2/CLIM/instM_3d_aer_Nv/merra2.aer_Nv.ps_delp.2003-2014.2008"
 
 # -------------
 # Run the remap
