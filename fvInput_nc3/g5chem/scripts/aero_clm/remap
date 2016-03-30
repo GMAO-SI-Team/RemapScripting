@@ -60,13 +60,13 @@ else
    exit 1
 endif
 
-if ( ! -x $POSTDIR/convert_aerosols.x ) then
-   echo "Error: convert_aerosols.x not found in $POSTDIR"
+if ( ! -x $BINDIR/convert_aerosols.x ) then
+   echo "Error: convert_aerosols.x not found in $BINDIR"
    exit 1
 endif
 
 set SHAREL72DIR = /discover/nobackup/projects/gmao/share/dao_ops/fvInput_nc3/g5chem/L72/aero_clm
-set SHAREL137DIR = /discover/nobackup/projects/gmao/share/dao_ops/fvInput_nc3/g5chem/L137/aero_clm
+set MERRA2PSDIR = /discover/nobackup/mathomp4/Merra2_PSDELP_forRemap
 
 # MAT: Note that convert_aerosols.x should be compiled at r8 for this task. Some
 #      of the aerosols climatology values are very small and instabilities can be
@@ -87,7 +87,7 @@ cd $outdir
 foreach file ($files)
 
    ln -s $SHAREL72DIR/$file fdummy
-   $POSTDIR/convert_aerosols.x -psfile $SHAREL137DIR/d5_merra.PS.clim.ALL.DC0576xPC0361.nc4 -f fdummy -lm ${numlevs}
+   $POSTDIR/convert_aerosols.x -psfile $MERRA2PSDIR/merra2.aer_Nv.ps_delp.2003-2014.2008clm.nc4 -f fdummy -lm ${numlevs}
    /bin/rm fdummy
    /bin/mv fdummy* $file
 
