@@ -95,7 +95,11 @@ foreach file ($files)
    echo $file                                  > filename1
    echo $file |  sed -e "s/z72/z${numlevs}/g"  > filename2
 
-   /bin/mv `cat filename1 filename2`
+   # Only do this (useless?) move if the names are different
+   # This mainly avoids an annoying warning from mv
+   if (`cat filename1` != `cat filename2`) then
+      /bin/mv `cat filename1 filename2`
+   endif
 
 end
 
