@@ -6,6 +6,8 @@ import argparse
 
 import subprocess as sp
 
+SHAREDIR = '/discover/nobackup/projects/gmao/share/gmao_ops'
+
 def rename_dirs(directory, in_pattern, out_pattern):
     """
     This function takes a directory and will rename any
@@ -17,6 +19,34 @@ def rename_dirs(directory, in_pattern, out_pattern):
         for dir in dirs:
             if dir == in_pattern:
                 os.rename(os.path.join(root, in_pattern), os.path.join(root, out_pattern))
+
+def link_surface_dirs(directory, in_pattern):
+    """
+    This function takes a directory and will rename any
+    subdirectories called 'in_pattern' to be named
+    'out_pattern'
+    """
+
+    for root, dirs, files in os.walk(directory, topdown=False):
+        for dir in dirs:
+            if dir == in_pattern:
+                #print root, dir
+                # First, grab the end of the root where in_pattern exists
+                #   /a/b/c/AeroCom/L132 ==> root = /a/b/c/AeroCom
+                # Then:
+                #      os.path.split(root)[1] = AeroCom
+
+                emissionspath, emissionsdir = os.path.split(root)
+
+                inputrootdir = os.path.split(emissionspath)[1]
+
+                sfcdir = os.path.join(SHAREDIR,inputrootdir,emissionsdir,'sfc')
+                xdir =   os.path.join(SHAREDIR,inputrootdir,emissionsdir,'x')
+
+                os.symlink(sfcdir,os.path.join(root,'sfc'))
+                os.symlink(  xdir,os.path.join(root,'x'))
+
+
 
 def find_script(directory, scriptname):
     """
@@ -79,6 +109,24 @@ def check_env():
     if not os.path.exists(convertaerofile):
         raise Exception("convert_aerosols.x file not found in %s" % postdir)
 
+def print_advice(outdir):
+    """
+    Print a message on what to set in gcm_run.j
+    """
+
+    chmdirstr = "setenv CHMDIR   %s" % os.path.join(outdir,'fvInput')
+
+    print "*" * 72
+    print "*" * 72
+    print "**" + " "*68+"**"
+    print "**" + "In order to test these, in gcm_run.j, for CHMDIR use:".center(68)+"**"
+    print "**" + " "*68+"**"
+    print "**" + chmdirstr.center(68) + "**"
+    print "**" + " "*68+"**"
+    print "*" * 72
+    print "*" * 72
+
+
 def main():
 
     check_env()
@@ -96,6 +144,8 @@ def main():
     print "Current Directory: %s" % currdir
     print "Output Directory: %s" % outdir
     print
+    print "Share directory: %s" % SHAREDIR
+    print
 
     levdir = 'L'+str(numlevs)
 
@@ -111,14 +161,26 @@ def main():
     # Rename the scripts directorys to L<numlevs>
     rename_dirs(outdir, 'scripts', levdir)
 
+    # Run the doremap script
     doremap_scripts = find_script(outdir, 'doremap')
     execute_scripts(outdir, doremap_scripts, numlevs, 'doremap', dryrun)
 
+    # Run the remap script
     remap_scripts = find_script(outdir, 'remap')
     execute_scripts(outdir, remap_scripts, numlevs, 'remap', dryrun)
 
+    # Run the remap_gfed script
     remap_gfed_scripts = find_script(outdir, 'remap_gfed')
     execute_scripts(outdir, remap_gfed_scripts, numlevs, 'remap_gfed', dryrun)
+
+    # Create links to the sfc and x directories in SHAREDIR
+    link_surface_dirs(outdir, levdir)
+
+    # Create a link to the g5chem dir in the fvinput dir
+    os.symlink( os.path.join(outdir,'fvInput_nc3','g5chem'), os.path.join(outdir,'fvInput','g5chem'))
+
+    # Finally, print out a nice advice to users
+    print_advice(outdir)
 
 def parse_args():
 
