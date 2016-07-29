@@ -158,6 +158,10 @@ def main():
     shutil.copytree(currdir, outdir, symlinks=True, 
             ignore=shutil.ignore_patterns('*.bash', '*.py', '.git*'))
 
+    # Copytree keeps the access time of whatever was copied. This
+    # command will essentially "touch" the directory
+    os.utime(outdir, None)
+
     # Rename the scripts directorys to L<numlevs>
     rename_dirs(outdir, 'scripts', levdir)
 
