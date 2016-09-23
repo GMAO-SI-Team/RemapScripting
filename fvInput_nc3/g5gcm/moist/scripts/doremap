@@ -66,19 +66,21 @@ if ( ! -x $BINDIR/GFIO_remap.x ) then
    exit 1
 endif
 
-set indir = "/discover/nobackup/projects/gmao/share/gmao_ops/fvInput/g5chem/L72/aero_clm"
+#set indir = "/discover/nobackup/rgovinda/AER_V_CLIM/CLIMATOLOGY"
+#set indir = "/discover/nobackup/projects/gmao/share/gmao_ops/fvInput/AeroCom/L72/aero_clm/"
+set indir = "/discover/nobackup/projects/gmao/share/gmao_ops/fvInput/g5gcm/moist/L72"
 
 mkdir -p $outdir
 
 cd $outdir
 
-set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.2003-2014.2008"
+set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x720_y361.2003-2014.2008"
 
 # -------------
 # Run the remap
 # -------------
 
-foreach IFILE ( `find $indir -type f -iname "dR_MERRA-AA-r2.aer_Nv.2003-2014*"` )
+foreach IFILE ( `find $indir -type f -iname "Wvar_positive_05hrdeg_2006*"` )
    
    set FILE = `basename $IFILE`
    

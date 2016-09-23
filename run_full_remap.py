@@ -182,6 +182,7 @@ def main():
 
     # Create a link to the g5chem dir in the fvinput dir
     os.symlink( os.path.join(outdir,'fvInput_nc3','g5chem'), os.path.join(outdir,'fvInput','g5chem'))
+    os.symlink( os.path.join(outdir,'fvInput_nc3','g5gcm'), os.path.join(outdir,'fvInput','g5gcm'))
 
     # Finally, print out a nice advice to users
     print_advice(outdir)

@@ -66,7 +66,7 @@ if ( ! -x $BINDIR/GFIO_remap.x ) then
    exit 1
 endif
 
-set TYPE_TABLE = ( AeroCom.aircraft_fuel A2_ACCMIP gmi_oh_ch4 )
+set TYPE_TABLE = ( AeroCom.aircraft_fuel A2_ACCMIP gmi_oh_ch4 GMI.vmr )
 
 set indir = "/discover/nobackup/projects/gmao/share/dasilva/fvInput/fvInput_nc3/PIESA/L72"
 
@@ -79,16 +79,19 @@ foreach TYPE ( `echo $TYPE_TABLE` )
    echo "Running $TYPE..."
 
    if ( $TYPE == "AeroCom.aircraft_fuel" ) then
-      set PS_FILE = "/discover/nobackup/rgovinda/d5124_m2_jan00/MERRA2/CLIM/instM_3d_aer_Nv/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008"
+      set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008"
       set TAGO = "x288_y181_z${numlevs}_t14"
    else if ( $TYPE == "A2_ACCMIP" ) then
-      set PS_FILE = "/discover/nobackup/rgovinda/d5124_m2_jan00/MERRA2/CLIM/instM_3d_aer_Nv/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
+      set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
       set TAGO = "x144_y91_z${numlevs}_t14"
    else if ( $TYPE == "gmi_oh_ch4"  ) then
       set TAGO = "x144_y91_z${numlevs}_t12"
+   else if ( $TYPE == "GMI.vmr" ) then
+      set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
+      set TAGO = "x144_y91.t12"
    endif
    
-   foreach IFILE ( `find $indir -type f -iname "${TYPE}*z72*"` )
+   foreach IFILE ( `find $indir -type f -iname "${TYPE}*"` )
       set FILE = `basename $IFILE`
       set TAG1 = `echo $FILE | awk -F. '{print $1 }'`
       set TAG2 = `echo $FILE | awk -F. '{print $2 }'`
@@ -98,25 +101,25 @@ foreach TYPE ( `echo $TYPE_TABLE` )
       set TAG6 = `echo $FILE | awk -F. '{print $6 }'`
       set TAG7 = `echo $FILE | awk -F. '{print $7 }'`
       
-      if ( $TAG4 == "nc" ) then
+      if ( $TAG4 == "nc" || $TAG4 == "nc4" ) then
          set ix = 4
          @ ix1 = $ix - 1
          set TAG = $TAG3
          echo  $FILE $TAG1 $TAG 
       endif
-      if ( $TAG5 == "nc" ) then
+      if ( $TAG5 == "nc" || $TAG5 == "nc4" ) then
          set ix = 5
          @ ix1 = $ix - 1
          set TAG = $TAG4
          echo  $FILE $TAG1 $TAG 
       endif
-      if ( $TAG6 == "nc" ) then
+      if ( $TAG6 == "nc" || $TAG6 == "nc4" ) then
          set ix = 6
          @ ix1 = $ix - 1
          set TAG = $TAG5
          echo  $FILE $TAG1 $TAG 
       endif
-      if ( $TAG7 == "nc" ) then
+      if ( $TAG7 == "nc" || $TAG7 == "nc4" ) then
          set ix = 7
          @ ix1 = $ix - 1
          set TAG = $TAG6
@@ -146,7 +149,7 @@ foreach TYPE ( `echo $TYPE_TABLE` )
          /bin/ln -s AeroCom.aircraft_fuel.eta.${TAGO}.${TAG}.nc AeroCom.aircraft_fuel.eta.${TAGO}.${FULLYEAR}.nc
 
       else if ( $TYPE == "A2_ACCMIP" ) then
-         
+
          $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${FILE}.LON_0_360 \
                                                       ${indir}/$FILE 
          mv ${FILE}.LON_0_360 $FILE
@@ -157,25 +160,41 @@ foreach TYPE ( `echo $TYPE_TABLE` )
 
          $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${outdir}/A2_ACCMIP_gmic_MERRA_oh_h2o2_no3.${TAGO}.${TAG}.nc \
                                                          A2_ACCMIP_gmic_MERRA_oh_h2o2_no3.${TAGO}.${TAG}.nc.LON_0_360
-   
+
          /bin/rm ${FILE}
          /bin/rm A2_ACCMIP_gmic_MERRA_oh_h2o2_no3.${TAGO}.${TAG}.nc.LON_0_360
-   
+
       else if ( $TYPE == "gmi_oh_ch4"  ) then
 
          $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${FILE}.LON_0_360 ${indir}/$FILE 
          mv ${FILE}.LON_0_360 $FILE
-   
+
          $BINDIR/GFIO_remap.x -nlev ${numlevs} -pref 100000 -like_sph 4,oh,ch4,h2o2,no3 \
                                                          -o gmi_oh_ch4_h2o2_no3.${TAGO}.${TAG}.nc.LON_0_360 \
                                                             $FILE
-   
+
          $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${outdir}/gmi_oh_ch4_h2o2_no3.${TAGO}.${TAG}.nc \
                                                          gmi_oh_ch4_h2o2_no3.${TAGO}.${TAG}.nc.LON_0_360
-   
+
          /bin/rm ${FILE}
          /bin/rm  gmi_oh_ch4_h2o2_no3.${TAGO}.${TAG}.nc.LON_0_360
-      
+
+      else if ( $TYPE == "GMI.vmr" ) then
+
+         $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${FILE}.LON_0_360 \
+                                                      ${indir}/$FILE 
+         mv ${FILE}.LON_0_360 $FILE
+
+         $BINDIR/GFIO_remap.x -nlev ${numlevs} -like_sph 1,hno3 -pref 100000 -psfile $PS_FILE -clim -add_delp  \
+                                                         -o GMI.vmr_HNO3.${TAGO}.${TAG}.nc4.LON_0_360 \
+                                                            $FILE
+
+         $BINDIR/GFIO_remap.x -shift  -pref 100000 -o ${outdir}/GMI.vmr_HNO3.${TAGO}.${TAG}.nc4 \
+                                                         GMI.vmr_HNO3.${TAGO}.${TAG}.nc4.LON_0_360
+
+         /bin/rm ${FILE}
+         /bin/rm GMI.vmr_HNO3.${TAGO}.${TAG}.nc4.LON_0_360
+
       endif
    end
 end
