@@ -39,9 +39,14 @@ echo "Copying $LEVDIR files from $WORKDIR to $SHAREDIR"
 
 set FVINPUT_TYPES = ( AeroCom CMIP MERRA2 NR )
 
-foreach TYPE ( echo `$FVINPUT_TYPES` )
+foreach TYPE ( `echo $FVINPUT_TYPES` )
 
    echo "Working on $TYPE..."
+
+   if ( ! -d $WORKDIR/fvInput/$TYPE/$LEVDIR) then
+      echo "ERROR! $WORKDIR/fvInput/$TYPE/$LEVDIR does not exist"
+      exit 1
+   endif
 
    if ( -d $SHAREDIR/fvInput/$TYPE/$LEVDIR ) then
       echo "ERROR! $SHAREDIR/fvInput/$TYPE/$LEVDIR exists!"
@@ -68,3 +73,11 @@ if ( -d $WORKDIR/fvInput_nc3/g5gcm/moist/$LEVDIR ) then
 else
    cp -rv $WORKDIR/fvInput_nc3/g5gcm/moist/$LEVDIR $SHAREDIR/fvInput_nc3/g5gcm/moist/
 endif
+
+usage:
+cat <<EOF
+
+usage: $0:t -levs numlevels -indir INDIR
+
+EOF
+
