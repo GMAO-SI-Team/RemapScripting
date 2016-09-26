@@ -72,6 +72,27 @@ mkdir -p $outdir
 
 cd $outdir
 
+# -----------------------------------
+# Copy input ps_delp files for safety
+# -----------------------------------
+
+set RES_TYPES = ( x288_y181 x144_y091 )
+
+set input_psdir = $outdir/inputps
+mkdir -p $input_psdir
+
+set archdir = "/archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth"
+
+foreach RES ( `echo $RES_TYPES` )
+
+   foreach month ( `seq -w 01 12` )
+
+      if ( ! -f $input_psdir/merra2.aer_Nv.ps_delp.$RES.2003-2014.2008${month}clm.nc4 ) then
+         cp -v $archdir/merra2.aer_Nv.ps_delp.$RES.2003-2014.2008${month}clm.nc4 $input_psdir
+      endif
+   end
+end
+
 set TYPE_TABLE = ( cmip5.aircraft_fuel gmi_oh_ch4_h2o2_no3 )
 
 foreach TYPE ( `echo $TYPE_TABLE` ) 
@@ -79,10 +100,10 @@ foreach TYPE ( `echo $TYPE_TABLE` )
    echo "Running $TYPE..."
    
    if ( $TYPE == "cmip5.aircraft_fuel" ) then
-      set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008"
+      set PS_FILE = "$input_psdir/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008"
       set TAGO = "x288_y181_z${numlevs}_t14"
    else if ( $TYPE == "gmi_oh_ch4_h2o2_no3"  ) then
-      set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
+      set PS_FILE = "$input_psdir/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
       set TAGO = "x144_y91_z${numlevs}_t12"
    endif
 

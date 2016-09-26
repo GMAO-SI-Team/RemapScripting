@@ -72,6 +72,27 @@ mkdir -p $outdir
 
 cd $outdir
 
+# -----------------------------------
+# Copy input ps_delp files for safety
+# -----------------------------------
+
+set RES_TYPES = ( x144_y091 )
+
+set input_psdir = $outdir/inputps
+mkdir -p $input_psdir
+
+set archdir = "/archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth"
+
+foreach RES ( `echo $RES_TYPES` )
+
+   foreach month ( `seq -w 01 12` )
+
+      if ( ! -f $input_psdir/merra2.aer_Nv.ps_delp.$RES.2003-2014.2008${month}clm.nc4 ) then
+         cp -v $archdir/merra2.aer_Nv.ps_delp.$RES.2003-2014.2008${month}clm.nc4 $input_psdir
+      endif
+   end
+end
+
 set TYPE_TABLE = ( gmi_ctm_hindcast.oxidants )
 
 foreach TYPE ( `echo $TYPE_TABLE` ) 
@@ -79,7 +100,7 @@ foreach TYPE ( `echo $TYPE_TABLE` )
    echo "Running $TYPE..."
 
    if ( $TYPE == "gmi_ctm_hindcast.oxidants"  ) then
-      set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
+      set PS_FILE = "$input_psdir/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008"
       set TAGO = "x144_y91_z${numlevs}_t14"
    endif
 

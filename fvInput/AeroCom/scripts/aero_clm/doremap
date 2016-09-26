@@ -72,7 +72,23 @@ mkdir -p $outdir
 
 cd $outdir
 
-set PS_FILE = "/discover/nobackup/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.2003-2014.2008"
+# -----------------------------------
+# Copy input ps_delp files for safety
+# -----------------------------------
+
+set input_psdir = $outdir/inputps
+mkdir -p $input_psdir
+
+set archdir = "/archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth"
+
+foreach month ( `seq -w 01 12` )
+
+   if ( ! -f $input_psdir/merra2.aer_Nv.ps_delp.2003-2014.2008${month}clm.nc4 ) then
+      cp -v $archdir/merra2.aer_Nv.ps_delp.2003-2014.2008${month}clm.nc4 $input_psdir
+   endif
+end
+
+set PS_FILE = "$input_psdir/merra2.aer_Nv.ps_delp.2003-2014.2008"
 
 # -------------
 # Run the remap
