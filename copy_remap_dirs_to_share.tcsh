@@ -43,11 +43,6 @@ foreach TYPE ( `echo $FVINPUT_TYPES` )
 
    echo "Working on $TYPE..."
 
-   if ( ! -d $WORKDIR/fvInput/$TYPE/$LEVDIR) then
-      echo "ERROR! $WORKDIR/fvInput/$TYPE/$LEVDIR does not exist"
-      exit 1
-   endif
-
    if ( -d $SHAREDIR/fvInput/$TYPE/$LEVDIR ) then
       echo "ERROR! $SHAREDIR/fvInput/$TYPE/$LEVDIR exists!"
       exit 1
