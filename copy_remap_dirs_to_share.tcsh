@@ -55,14 +55,14 @@ end
 # fvInput_nc3
 # -----------
 
-if ( -d $WORKDIR/fvInput_nc3/g5chem/$LEVDIR ) then
+if ( -d $SHAREDIR/fvInput_nc3/g5chem/$LEVDIR ) then
    echo "ERROR! $SHAREDIR/fvInput_nc3/g5chem/$LEVDIR exists!"
    exit 1
 else
    cp -rv $WORKDIR/fvInput_nc3/g5chem/$LEVDIR $SHAREDIR/fvInput_nc3/g5chem/
 end
 
-if ( -d $WORKDIR/fvInput_nc3/g5gcm/moist/$LEVDIR ) then
+if ( -d $SHAREDIR/fvInput_nc3/g5gcm/moist/$LEVDIR ) then
    echo "ERROR! $SHAREDIR/fvInput_nc3/g5gcm/moist/$LEVDIR exists!"
    exit 1
 else
