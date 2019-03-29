@@ -123,6 +123,8 @@ def print_advice(outdir):
     print "**" + " "*68+"**"
     print "**" + chmdirstr.center(68) + "**"
     print "**" + " "*68+"**"
+    print "**" + "Also go into SC-CFC and make a new SC file there".center(68)+"**"
+    print "**" + " "*68+"**"
     print "*" * 72
     print "*" * 72
 
