@@ -33,22 +33,20 @@ echo "Remapping to $numlevs levels"
 echo "Output will be saved to $outdir"
 
 # ----------------
-# Test for ESMADIR
+# Test for BINDIR
 # ----------------
 
-if ( $?ESMADIR ) then
-   if ( $ESMADIR == '' ) then
-      echo "Error: ESMADIR is set to blank. Please set it correctly"
+if ( $?BINDIR ) then
+   if ( $BINDIR == '' ) then
+      echo "Error: BINDIR is set to blank. Please set it correctly"
       exit 1
    else 
-      echo "ESMADIR: $ESMADIR"
+      echo "BINDIR: $BINDIR"
    endif
 else
-   echo "Error: ESMADIR must be set"
+   echo "Error: BINDIR must be set"
    exit 1
 endif
-
-set BINDIR = $ESMADIR/Linux/bin
 
 # ---------------------------------
 # Test for required files in BINDIR

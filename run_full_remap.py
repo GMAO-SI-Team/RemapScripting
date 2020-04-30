@@ -89,11 +89,9 @@ def check_env():
     Check of environment to make sure all is okay
     """
 
-    assert(os.environ.has_key("ESMADIR")), 'ESMADIR not found in environment'
+    assert(os.environ.has_key("BINDIR")), 'BINDIR not found in environment, set so that $BINDIR/g5_modules exists'
 
-    esmadir = os.environ['ESMADIR']
-
-    bindir = os.path.join(esmadir, 'Linux/bin')
+    bindir = os.environ['BINDIR']
 
     g5modfile = os.path.join(bindir, 'g5_modules')
     if not os.path.exists(g5modfile):
@@ -103,11 +101,9 @@ def check_env():
     if not os.path.exists(gfioremapfile):
         raise Exception("GFIO_remap.x file not found in %s" % bindir)
 
-    postdir = os.path.join(esmadir, 'src/GMAO_Shared/GEOS_Util/post')
-
-    convertaerofile = os.path.join(postdir, 'convert_aerosols.x')
+    convertaerofile = os.path.join(bindir, 'convert_aerosols.x')
     if not os.path.exists(convertaerofile):
-        raise Exception("convert_aerosols.x file not found in %s" % postdir)
+        raise Exception("convert_aerosols.x file not found in %s" % bindir)
 
 def print_advice(outdir):
     """

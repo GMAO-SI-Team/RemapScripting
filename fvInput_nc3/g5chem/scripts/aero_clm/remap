@@ -31,23 +31,20 @@ echo "Remapping to $numlevs levels"
 echo "Output will be saved to $outdir"
 
 # ----------------
-# Test for ESMADIR
+# Test for BINDIR
 # ----------------
 
-if ( $?ESMADIR ) then
-   if ( $ESMADIR == '' ) then
-      echo "Error: ESMADIR is set to blank. Please set it correctly"
+if ( $?BINDIR ) then
+   if ( $BINDIR == '' ) then
+      echo "Error: BINDIR is set to blank. Please set it correctly"
       exit 1
    else 
-      echo "ESMADIR: $ESMADIR"
+      echo "BINDIR: $BINDIR"
    endif
 else
-   echo "Error: ESMADIR must be set"
+   echo "Error: BINDIR must be set"
    exit 1
 endif
-
-set BINDIR = $ESMADIR/Linux/bin
-set POSTDIR = $ESMADIR/src/GMAO_Shared/GEOS_Util/post
 
 # ---------------------------------
 # Test for required files in BINDIR
@@ -98,7 +95,7 @@ endif
 foreach file ($files)
 
    ln -s $SHAREL72DIR/$file fdummy
-   $POSTDIR/convert_aerosols.x -psfile $input_psdir/merra2.aer_Nv.ps_delp.2003-2014.2008clm.nc4 -f fdummy -lm ${numlevs}
+   $BINDIR/convert_aerosols.x -psfile $input_psdir/merra2.aer_Nv.ps_delp.2003-2014.2008clm.nc4 -f fdummy -lm ${numlevs}
    /bin/rm fdummy
    /bin/mv fdummy* $file
 
