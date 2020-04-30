@@ -92,7 +92,7 @@ set PS_FILE = "$input_psdir/merra2.aer_Nv.ps_delp.2003-2014.2008"
 # Run the remap
 # -------------
 
-foreach IFILE ( `find $indir -type f -iname "dR_MERRA-AA-r2.aer_Nv.2003-2014*"` )
+foreach IFILE ( `find $indir -type f -iname "dR_MERRA-AA-r2.aer_Nv.2003[-_]2014*"` )
    
    set FILE = `basename $IFILE`
    
