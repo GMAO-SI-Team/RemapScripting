@@ -55,11 +55,12 @@ then
    exit
 fi
 
-SRCNAME=rsf91
+SRCNAME=rsf137
 
 BASEBIN=${BASEDIR}/Linux/bin
 
-NETCDF_INCLUDES=$(${BASEBIN}/nf-config --includedir)/netcdf
+#NETCDF_INCLUDES=$(${BASEBIN}/nf-config --includedir)/netcdf
+NETCDF_INCLUDES=$(${BASEBIN}/nf-config --includedir)
 NETCDF_LIBS=$(${BASEBIN}/nf-config --flibs)
 
 MPIFC=mpiifort
