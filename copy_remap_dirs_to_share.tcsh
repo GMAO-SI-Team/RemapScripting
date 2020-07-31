@@ -1,4 +1,16 @@
 #!/bin/tcsh -f
+# Script from Matt Thompson, modified by Rob Lucchesi
+#
+# NOTE: If the script complains aobut duplicate directories,
+# the following sequence of BASH command lines can be used in
+# source directory to compare with the files at the target 
+# directory in $SHARE/gmao_ops.
+#
+#  find . -type f  | while read file; do if [ -e /discover/nobackup/projects/gmao/share/gmao_ops/$file ]; then ls -l  /discover/nobackup/projects/gmao/share/gmao_ops/$file; fi; done
+#  find . -type f  | while read file; do if [ -e /discover/nobackup/projects/gmao/share/gmao_ops/$file ]; then cmp $file  /discover/nobackup/projects/gmao/share/gmao_ops/$file; fi; done
+#
+#
+#
 
 # ------------------------------
 # Process command line arguments
@@ -44,11 +56,14 @@ foreach TYPE ( `echo $FVINPUT_TYPES` )
    echo "Working on $TYPE..."
 
    if ( -d $SHAREDIR/fvInput/$TYPE/$LEVDIR ) then
-      echo "ERROR! $SHAREDIR/fvInput/$TYPE/$LEVDIR exists!"
-      exit 1
-   else
-      cp -rv $WORKDIR/fvInput/$TYPE/$LEVDIR $SHAREDIR/fvInput/$TYPE
+      echo "WARNING! $SHAREDIR/fvInput/$TYPE/$LEVDIR exists!"
+      echo -n "\n Make sure you are not overwriting files. Do you wish to continue? [y/n] "
+      set reply = $<
+      if ( "$reply" != "y" ) then
+          exit 1
+      endif
    endif
+   cp -rv $WORKDIR/fvInput/$TYPE/$LEVDIR $SHAREDIR/fvInput/$TYPE
 end
 
 # -----------
@@ -56,18 +71,24 @@ end
 # -----------
 
 if ( -d $SHAREDIR/fvInput_nc3/g5chem/$LEVDIR ) then
-   echo "ERROR! $SHAREDIR/fvInput_nc3/g5chem/$LEVDIR exists!"
-   exit 1
-else
-   cp -rv $WORKDIR/fvInput_nc3/g5chem/$LEVDIR $SHAREDIR/fvInput_nc3/g5chem/
-end
+   echo "WARNING! $SHAREDIR/fvInput_nc3/g5chem/$LEVDIR exists!"
+   echo -n "\n Make sure you are not overwriting files. Do you wish to continue? [y/n] "
+   set reply = $<
+   if ( "$reply" != "y" ) then
+       exit 1
+   endif
+endif
+cp -rv $WORKDIR/fvInput_nc3/g5chem/$LEVDIR $SHAREDIR/fvInput_nc3/g5chem/
 
 if ( -d $SHAREDIR/fvInput_nc3/g5gcm/moist/$LEVDIR ) then
-   echo "ERROR! $SHAREDIR/fvInput_nc3/g5gcm/moist/$LEVDIR exists!"
-   exit 1
-else
-   cp -rv $WORKDIR/fvInput_nc3/g5gcm/moist/$LEVDIR $SHAREDIR/fvInput_nc3/g5gcm/moist/
+   echo "WARNING! $SHAREDIR/fvInput_nc3/g5gcm/moist/$LEVDIR exists!"
+   echo -n "\n Make sure you are not overwriting files. Do you wish to continue? [y/n] "
+   set reply = $<
+   if ( "$reply" != "y" ) then
+       exit 1
+   endif
 endif
+cp -rv $WORKDIR/fvInput_nc3/g5gcm/moist/$LEVDIR $SHAREDIR/fvInput_nc3/g5gcm/moist/
 
 usage:
 cat <<EOF
