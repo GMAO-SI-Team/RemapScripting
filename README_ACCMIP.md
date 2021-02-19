@@ -2,10 +2,12 @@
 
 ### Clone repo
 ```
-git clone git@github.com:GMAO-SI-Team/RemapScripting.git Remap-L181
+git clone git@github.com:GMAO-SI-Team/RemapScripting.git
 ```
 
 ### Do Remapping
+
+The remapping script is in the `fvInput/AeroCom/scripts` directory as `doremap`.
 
 #### Be on a Head Node
 
