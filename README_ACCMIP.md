@@ -60,6 +60,7 @@ index 0187456..ee2bb47 100755
        set FILE = `basename $IFILE`
        set TAG1 = `echo $FILE | awk -F. '{print $1 }'`
        set TAG2 = `echo $FILE | awk -F. '{print $2 }'` ```
+```
 
 #### dmget the archive files
 
