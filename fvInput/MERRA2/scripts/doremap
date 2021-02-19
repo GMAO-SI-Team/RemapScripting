@@ -146,7 +146,7 @@ foreach TYPE ( `echo $TYPE_TABLE` )
       if ( $TYPE == "gmi_ctm_hindcast.oxidants" ) then
 
 
-         $BINDIR/GFIO_remap.x -nlev ${numlevs} -like_sph 6,oh,h2o2,no3,ch4,o3,ho2 -pref 100000  \
+         $BINDIR/GFIO_remap.x -nlev ${numlevs} -like_sph 6,OH,H2O2,NO3,CH4,O3,HO2 -pref 100000  \
                                                          -o $outdir/$TYPE.${TAGO}.$TAG.$NC_TAG \
                                                             $indir/${FILE}
 
