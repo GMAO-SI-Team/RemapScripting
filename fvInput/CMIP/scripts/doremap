@@ -1,7 +1,5 @@
 #!/bin/tcsh -f
 
-# MAT: Note, to reproduce these files you'll need ver 1.25 of GFIO_remap.f90
-
 # ------------------------------
 # Process command line arguments
 # ------------------------------
