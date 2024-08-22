@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import os, sys
+import os
 import shutil
 import argparse
 
@@ -30,7 +30,7 @@ def link_surface_dirs(directory, in_pattern):
     for root, dirs, files in os.walk(directory, topdown=False):
         for dir in dirs:
             if dir == in_pattern:
-                #print root, dir
+                #print(root, dir)
                 # First, grab the end of the root where in_pattern exists
                 #   /a/b/c/AeroCom/L132 ==> root = /a/b/c/AeroCom
                 # Then:
@@ -74,22 +74,22 @@ def execute_scripts(outdir, scripts, levels, scriptname, dryrun):
         logfile = os.path.dirname(script) + os.sep + scriptname + '.log'
         spcmd = [script,'-levs',str(levels),'-outdir',scriptdir]
 
-        print 'Executing: %s ' % script
-        print 'Logfile: %s' % logfile
+        print(f"Executing: {script}")
+        print(f"Logfile: {logfile}")
 
         if not dryrun:
             with open(logfile, 'w') as f:
                 sp.call(spcmd, stdout=f)
-            print 'Execution of %s complete' % scriptname
+            print(f"Execution of {scriptname} complete")
 
-        print
+        print()
 
 def check_env():
     """
     Check of environment to make sure all is okay
     """
 
-    assert(os.environ.has_key("BINDIR")), 'BINDIR not found in environment, set so that $BINDIR/g5_modules exists'
+    assert("BINDIR" in os.environ), 'BINDIR not found in environment, set so that $BINDIR/g5_modules exists'
 
     bindir = os.environ['BINDIR']
 
@@ -106,24 +106,28 @@ def check_env():
         raise Exception("convert_aerosols.x file not found in %s" % bindir)
 
 def print_advice(outdir):
-    """
-    Print a message on what to set in gcm_run.j
-    """
-
-    chmdirstr = "setenv CHMDIR   %s" % os.path.join(outdir,'fvInput')
-
-    print "*" * 72
-    print "*" * 72
-    print "**" + " "*68+"**"
-    print "**" + "In order to test these, in gcm_run.j, for CHMDIR use:".center(68)+"**"
-    print "**" + " "*68+"**"
-    print "**" + chmdirstr.center(68) + "**"
-    print "**" + " "*68+"**"
-    print "**" + "Also go into SC-CFC and make a new SC file there".center(68)+"**"
-    print "**" + " "*68+"**"
-    print "*" * 72
-    print "*" * 72
-
+    """Print a message on what to set in gcm_run.j"""
+    chmdirstr = f"setenv CHMDIR {os.path.join(outdir, 'fvInput')}"
+    
+    border = "*" * 72
+    padding = " " * 68
+    
+    messages = [
+        "In order to test these, in gcm_run.j, for CHMDIR use:",
+        chmdirstr,
+        "Also go into SC-CFC and make a new SC file there"
+    ]
+    
+    print(border)
+    print(border)
+    
+    for message in messages:
+        print(f"**{padding}**")
+        print(f"**{message.center(68)}**")
+        print(f"**{padding}**")
+    
+    print(border)
+    print(border)
 
 def main():
 
@@ -138,12 +142,12 @@ def main():
 
     currdir = os.path.dirname(os.path.realpath(__file__))
 
-    print "Num levs: %d" % numlevs
-    print "Current Directory: %s" % currdir
-    print "Output Directory: %s" % outdir
-    print
-    print "Share directory: %s" % SHAREDIR
-    print
+    print(f"Num levs: {numlevs}")
+    print(f"Current Directory: {currdir}")
+    print(f"Output Directory: {outdir}")
+    print()
+    print(f"Share directory: {SHAREDIR}")
+    print()
 
     levdir = 'L'+str(numlevs)
 
