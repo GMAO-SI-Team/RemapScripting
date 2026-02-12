@@ -75,7 +75,7 @@ cd $outdir
 set input_psdir = $outdir/inputps
 mkdir -p $input_psdir
 
-set archdir = "/archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth"
+set archdir = "/discover/nobackup/projects/gmao/SIteam/Merra2_PSDELP_forRemap/PerMonth"
 
 foreach month ( `seq -w 01 12` )
 

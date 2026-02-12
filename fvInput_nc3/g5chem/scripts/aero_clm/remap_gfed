@@ -86,7 +86,7 @@ cd $outdir
 set input_psdir = $outdir/inputps
 mkdir -p $input_psdir
 
-set archdir = "/archive/u/mathomp4/Merra2_PSDELP_forRemap/"
+set archdir = "/discover/nobackup/projects/gmao/SIteam/Merra2_PSDELP_forRemap/"
 
 if ( ! -f $input_psdir/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008clm.nc4 ) then
    cp -v $archdir/merra2.aer_Nv.ps_delp.x288_y181.2003-2014.2008clm.nc4 $input_psdir

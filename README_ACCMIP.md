@@ -9,11 +9,6 @@ git clone git@github.com:GMAO-SI-Team/RemapScripting.git
 
 The remapping script is in the `fvInput/AeroCom/scripts` directory as `doremap`.
 
-#### Be on a Head Node
-
-Annoyingly, we have to get files from `/archive` so make sure you are on a head
-node. (This should probably be fixed...)
-
 #### Define BINDIR
 
 The environment needs to have `BINDIR` defined a la:
@@ -62,13 +57,6 @@ index 0187456..ee2bb47 100755
        set TAG2 = `echo $FILE | awk -F. '{print $2 }'` ```
 ```
 
-#### dmget the archive files
-
-To speed things up you can do:
-```console
-$ dmget /archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.2008*
-```
-
 #### Run the script
 
 Go to `fvInput/AeroCom/scripts`. There is a `doremap` script:
@@ -85,7 +73,7 @@ Output will be saved to /discover/nobackup/mathomp4/ACCMIP-2021/L181-2021Feb19
 BINDIR: /discover/nobackup/mathomp4/SystemTests/builds/AGCM/CURRENT/GEOSgcm/install-Release/bin
 g5_modules: Setting BASEDIR and modules for discover35
 ...
-'/archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.200801clm.nc4' -> '/discover/nobackup/mathomp4/ACCMIP-2021/L181-2021Feb19/inputps/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.200801clm.nc4'
+'/discover/nobackup/projects/gmao/SIteam/Merra2_PSDELP_forRemap/PerMonth/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.200801clm.nc4' -> '/discover/nobackup/mathomp4/ACCMIP-2021/L181-2021Feb19/inputps/merra2.aer_Nv.ps_delp.x144_y091.2003-2014.200801clm.nc4'
 ...
 Running A2_ACCMIP...
 ...

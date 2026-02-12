@@ -77,7 +77,7 @@ set RES_TYPES = ( x144_y091 )
 set input_psdir = $outdir/inputps
 mkdir -p $input_psdir
 
-set archdir = "/archive/u/mathomp4/Merra2_PSDELP_forRemap/PerMonth"
+set archdir = "/discover/nobackup/projects/gmao/SIteam/Merra2_PSDELP_forRemap/PerMonth"
 
 foreach RES ( `echo $RES_TYPES` )
 
